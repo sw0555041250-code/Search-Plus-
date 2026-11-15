@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>חיפוש פלוס – כותבים מה מחפשים, והספר נפתח במקום</title>
+<meta name="description" content="חיפוש פלוס: חיפוש מעמיק בתוך כל ספרי ה-PDF שבמכשיר – במילים, לפי משמעות ובמעבר מהיר למקום. בינה מלאכותית שעובדת בתוך המכשיר, בלי אינטרנט. חינם.">
+<meta property="og:title" content="חיפוש פלוס">
+<meta property="og:description" content="כותבים מה מחפשים – והספר נפתח בדיוק במקום. מעבר מהיר, שאלה ותשובה, וחיפוש מילים בתוך כל הספרים שלך.">
+<link rel="icon" href="icon.png">
+<style>
+@font-face { font-family: Heebo; src: url(fonts/heebo-hebrew.woff2) format("woff2"); font-weight: 100 900; unicode-range: U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: Heebo; src: url(fonts/heebo-latin.woff2) format("woff2"); font-weight: 100 900; }
+:root { --acc: #3B4FD8; --acc2: #7B3FE4; --ink: #111318; --sub: #5B6070; --bg: #F7F8FC; --card: #fff; --line: #E1E4EE; --gold: #F2C14E; --light: #E8EAFF; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; font-family: Heebo, system-ui, sans-serif; color: var(--ink); background: var(--bg); font-size: 18px; line-height: 1.6; }
+a { color: var(--acc); }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 22px; }
+nav { position: sticky; top: 0; z-index: 10; background: rgba(247,248,252,.86); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+nav .wrap { display: flex; align-items: center; gap: 22px; height: 64px; }
+nav .logo { font-weight: 900; font-size: 21px; display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; }
+nav .logo b { background: linear-gradient(135deg, var(--acc), var(--acc2)); color: #fff; border-radius: 10px; padding: 2px 9px; }
+nav .links { display: flex; gap: 20px; margin-right: auto; font-size: 16px; }
+nav .links a { color: var(--sub); text-decoration: none; }
+.btn { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, var(--acc), var(--acc2)); color: #fff; text-decoration: none; font-weight: 800; border-radius: 40px; padding: 15px 30px; font-size: 19px; box-shadow: 0 10px 26px rgba(59,79,216,.35); transition: transform .2s; }
+.btn:hover { transform: translateY(-2px); }
+.btn.ghost { background: #fff; color: var(--acc); box-shadow: none; border: 2px solid var(--acc); }
+.btn.small { padding: 9px 18px; font-size: 15px; }
+header.hero { background: radial-gradient(900px 600px at 15% 10%, #6F7CFF 0%, #3B4FD8 40%, #23308f 100%); color: #fff; overflow: hidden; }
+.hero .wrap { display: flex; align-items: center; gap: 50px; padding-top: 70px; padding-bottom: 80px; }
+.hero h1 { font-size: clamp(42px, 6vw, 72px); line-height: 1.04; margin: 0 0 18px; font-weight: 900; }
+.hero p.lead { font-size: 22px; color: #e3e7ff; margin: 0 0 30px; max-width: 560px; }
+.hero .btn { background: #fff; color: var(--acc); box-shadow: 0 14px 30px rgba(0,0,0,.25); }
+.hero .btn.ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,.6); }
+.hero .ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+.hero .badges { margin-top: 26px; display: flex; gap: 10px; flex-wrap: wrap; font-size: 15px; }
+.hero .badges span { background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28); border-radius: 30px; padding: 4px 14px; }
+.hero-text { flex: 1.2; }
+section { padding: 80px 0; }
+h2 { font-size: clamp(30px, 4vw, 44px); margin: 0 0 12px; font-weight: 900; line-height: 1.15; }
+.kicker { color: var(--acc); font-weight: 800; letter-spacing: .5px; font-size: 16px; margin-bottom: 6px; }
+.intro { color: var(--sub); font-size: 20px; max-width: 760px; margin: 0 0 40px; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.feat { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 26px; box-shadow: 0 6px 20px rgba(17,19,24,.04); }
+.feat .ic { width: 54px; height: 54px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 27px; margin-bottom: 14px; color: #fff; }
+.feat h3 { margin: 0 0 6px; font-size: 21px; }
+.feat p { margin: 0; color: var(--sub); font-size: 16.5px; }
+.g1 { background: linear-gradient(135deg, #3B4FD8, #6F7CFF); } .g2 { background: linear-gradient(135deg, #7B3FE4, #B06BFF); }
+.g3 { background: linear-gradient(135deg, #0E9F8E, #35CDB4); } .g4 { background: linear-gradient(135deg, #E0712C, #FFA65C); }
+.g5 { background: linear-gradient(135deg, #D6336C, #FF6F9B); } .g6 { background: linear-gradient(135deg, #475066, #7A8499); }
+.split { display: flex; gap: 60px; align-items: center; }
+.split.rev { flex-direction: row-reverse; }
+.split .txt { flex: 1; }
+.say { display: inline-block; background: var(--light); color: var(--acc); border-radius: 30px; padding: 4px 14px; margin: 4px 2px; font-weight: 700; font-size: 16px; }
+ul.check { list-style: none; padding: 0; margin: 18px 0 0; }
+ul.check li { padding-right: 32px; position: relative; margin-bottom: 10px; }
+ul.check li::before { content: '✓'; position: absolute; right: 0; top: 0; color: #0E9F8E; font-weight: 900; }
+.band { background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; text-align: center; }
+.stats b { display: block; font-size: 40px; font-weight: 900; background: linear-gradient(135deg, var(--acc), var(--acc2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.stats span { color: var(--sub); font-size: 16px; }
+.video { border-radius: 22px; overflow: hidden; box-shadow: 0 24px 60px rgba(17,19,24,.25); background: #000; }
+.video video { width: 100%; display: block; }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; counter-reset: s; }
+.step { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 26px; position: relative; }
+.step::before { counter-increment: s; content: counter(s); position: absolute; top: -18px; right: 24px; width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--acc), var(--acc2)); color: #fff; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+.step h3 { margin: 8px 0 6px; }
+.step p { margin: 0; color: var(--sub); font-size: 16.5px; }
+details { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px 20px; margin-bottom: 12px; }
+summary { font-weight: 800; cursor: pointer; font-size: 18.5px; }
+details p { color: var(--sub); margin: 10px 0 0; }
+.contact { background: linear-gradient(135deg, #23308f, #3B4FD8 60%, #7B3FE4); color: #fff; border-radius: 28px; padding: 50px; text-align: center; }
+.contact p { color: #e3e7ff; font-size: 20px; }
+footer { color: var(--sub); text-align: center; padding: 30px 0 50px; font-size: 15px; }
+
+/* phone mockups */
+.phone { width: 300px; flex: none; border: 10px solid #111; border-radius: 40px; background: #fff; overflow: hidden; box-shadow: 0 30px 70px rgba(0,0,0,.35); color: var(--ink); font-size: 12.5px; line-height: 1.4; }
+.ph-head { display: flex; align-items: center; gap: 8px; padding: 14px 12px 8px; }
+.ph-logo { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--acc), var(--acc2)); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; }
+.ph-title { font-weight: 900; font-size: 15px; }
+.ph-search { margin: 4px 10px 8px; border: 2px solid var(--acc); border-radius: 20px; background: #F4F5F8; display: flex; align-items: center; padding: 4px 6px 4px 10px; gap: 6px; }
+.ph-search .q { flex: 1; font-size: 13.5px; font-weight: 500; }
+.ph-search .go { background: var(--acc); color: #fff; border-radius: 14px; padding: 3px 10px; font-weight: 700; font-size: 11.5px; }
+.ph-body { padding: 4px 10px 12px; }
+.ph-hero { background: linear-gradient(135deg, var(--acc), var(--acc2)); color: #fff; border-radius: 14px; padding: 10px 12px; }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
+.tiles div { border-radius: 12px; color: #fff; padding: 8px; font-weight: 800; font-size: 12px; }
+.tiles div i { display: block; font-style: normal; font-size: 17px; }
+.row { border-bottom: 1px solid var(--line); padding: 8px 4px; }
+.row .t { font-weight: 800; font-size: 13px; display: flex; justify-content: space-between; }
+.row .t i { font-style: normal; background: var(--acc); color: #fff; border-radius: 9px; padding: 0 7px; font-size: 11px; }
+.row .f { color: var(--sub); font-size: 11px; }
+.answer { background: #FFF7DD; border: 2px solid #D8B040; border-radius: 12px; padding: 9px 11px; margin: 4px 0 8px; }
+.answer .h { color: var(--acc); font-weight: 800; font-size: 11.5px; }
+.answer .s { color: var(--acc); font-weight: 700; font-size: 11px; }
+.mic { text-align: center; padding: 16px 10px; background: linear-gradient(135deg, var(--acc), #6F7CFF); border-radius: 18px; color: #fff; margin: 4px 0 10px; }
+.mic .c { width: 90px; height: 90px; border-radius: 50%; background: #fff; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-size: 40px; box-shadow: 0 0 0 10px rgba(255,255,255,.18); animation: pulse 2s infinite; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 18px rgba(255,255,255,.08); } }
+.heard { border: 2px solid var(--acc); border-radius: 18px; padding: 6px 12px; font-weight: 700; margin: 6px 0; font-size: 13.5px; }
+.und { color: var(--acc); font-weight: 800; margin: 6px 2px; }
+.card { border: 1px solid var(--acc); background: var(--light); border-radius: 12px; padding: 8px 10px; margin: 5px 0; }
+.card b { display: block; font-size: 13px; }
+.card span { color: var(--sub); font-size: 11px; }
+mark { background: #FFE38A; font-weight: 800; padding: 0 2px; }
+.reveal { opacity: 0; transform: translateY(30px); transition: all .8s cubic-bezier(.2,.8,.2,1); }
+.reveal.in { opacity: 1; transform: none; }
+@media (max-width: 860px) {
+  body { font-size: 17px; }
+  .hero .wrap, .split, .split.rev { flex-direction: column; }
+  .grid, .steps { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  nav .links { display: none; }
+  nav .btn.small { margin-right: auto; }
+  .contact { padding: 34px 20px; }
+  section { padding: 56px 0; }
+}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="#"><b>פ+</b>חיפוש פלוס</a>
+  <div class="links"><a href="#features">יכולות</a><a href="#voice">מעבר מהיר</a><a href="#qa">שאלה ותשובה</a><a href="#video">סרטון</a><a href="#install">התקנה</a><a href="#faq">שאלות</a></div>
+  <a class="btn small" href="https://github.com/sw0555041250-code/Search-Plus-/releases/latest/download/SearchPlus.apk">⬇ הורדה</a>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="hero-text">
+    <h1>כותבים מה מחפשים –<br>והספר נפתח במקום.</h1>
+    <p class="lead">חיפוש פלוס קורא את כל ספרי ה-PDF שלך – אלפי ספרים, גם בכרטיס הזיכרון – ומוצא כל מקום: לפי מילים, לפי משמעות, ובמעבר מהיר לכל מקום. הבינה המלאכותית רצה בתוך המכשיר, בלי אינטרנט.</p>
+    <div class="ctas">
+      <a class="btn" href="https://github.com/sw0555041250-code/Search-Plus-/releases/latest/download/SearchPlus.apk">⬇ הורדה חינם לאנדרואיד</a>
+      <a class="btn ghost" href="#video">▶ לצפייה בסרטון</a>
+    </div>
+    <div class="badges"><span>⚡ מעבר מהיר לכל מקום</span><span>💡 שאלה ותשובה</span><span>📴 בלי אינטרנט</span><span>📖 BOOX ו-E-ink</span><span>❤ חינם</span></div>
+  </div>
+  <div class="phone">
+    <div class="ph-head"><div class="ph-logo">פ+</div><div class="ph-title">חיפוש פלוס</div><span style="margin-right:auto;color:var(--acc);font-weight:800">☰</span></div>
+    <div class="ph-search"><span class="q" style="color:#8a8a8a">מה לחפש? מילה, ביטוי או שאלה</span><span class="go">חיפוש</span></div>
+    <div class="ph-body">
+      <div class="ph-hero"><b style="font-size:14px">ערב טוב! מה נלמד היום?</b><div style="opacity:.85">אלפי ספרים · כל עמוד ניתן לחיפוש</div></div>
+      <div class="tiles">
+        <div class="g1"><i>⚡</i>מעבר מהיר</div><div class="g2"><i>💡</i>שאלה ותשובה</div>
+        <div class="g3"><i>🔤</i>חיפוש מילים</div><div class="g4"><i>📚</i>עיון בספרים</div>
+        <div class="g5"><i>🗂</i>סידור המאגר</div><div class="g6"><i>⚙</i>הגדרות</div>
+      </div>
+    </div>
+  </div>
+</div></header>
+
+<div class="band"><div class="wrap" style="padding:36px 22px">
+  <div class="stats">
+    <div><b>אלפי</b><span>ספרים נסרקים ונזכרים</span></div>
+    <div><b>שניות</b><span>מהמילה הנאמרת עד העמוד</span></div>
+    <div><b>0</b><span>חיבור לאינטרנט נדרש אחרי ההתקנה</span></div>
+    <div><b>100%</b><span>חינם, קוד פתוח</span></div>
+  </div>
+</div></div>
+
+<section id="features"><div class="wrap">
+  <div class="kicker">מה יש בפנים</div>
+  <h2>כל הספרייה שלך – בכיס, ומבינה אותך</h2>
+  <p class="intro">במקום לחפש את הכרך, לדפדף ולנחש – כותבים, ומגיעים. כל יכולת היא מסך משלה, וכולן נגישות מהמסך הראשי ומהתפריט הצדדי.</p>
+  <div class="grid">
+    <div class="feat reveal"><div class="ic g1">⚡</div><h3>מעבר מהיר</h3><p>"ברכות דף כ״ז עמוד א" – וכל מהדורות הגמרא שלך נפתחות בדף. "ליקוטי שיחות חלק ד׳ עמוד 58" – הכרך הנכון, בעמוד המודפס.</p></div>
+    <div class="feat reveal"><div class="ic g2">💡</div><h3>שאלה ותשובה</h3><p>שואלים במילים שלכם ומקבלים את המשפט שעונה, עם שם הספר והעמוד – גם כשהמילים עצמן לא מופיעות שם.</p></div>
+    <div class="feat reveal"><div class="ic g3">🔤</div><h3>חיפוש מילים בתוך הספרים</h3><p>בכל עמוד של כל ספר, לא רק בשמות. כולל ו׳ ה׳ ב׳ ל׳ ש׳, ביטוי מדויק, מילים קרובות וכוכבית.</p></div>
+    <div class="feat reveal"><div class="ic g4">📖</div><h3>נפתח בדיוק במקום</h3><p>בקורא המובנה עם המילים מסומנות – או ב-ReadEra וכל קורא שתבחרו כברירת מחדל.</p></div>
+    <div class="feat reveal"><div class="ic g5">🗂</div><h3>סידור המאגר</h3><p>ספרים כפולים לפי התוכן, סידור תיקיות עם תצוגה מקדימה, ושמות חכמים לקבצים – הכול ניתן לביטול.</p></div>
+    <div class="feat reveal"><div class="ic g6">🔍</div><h3>גם ספרים ישנים וסרוקים</h3><p>תיקון אוטומטי של עברית הפוכה וקידודים ישנים, וזיהוי טקסט (OCR) עברי לעמודים סרוקים.</p></div>
+  </div>
+</div></section>
+
+<section id="voice" class="band"><div class="wrap split">
+  <div class="txt reveal">
+    <div class="kicker">⚡ מעבר מהיר</div>
+    <h2>כותבים. רואים מה הובן. מגיעים.</h2>
+    <p class="intro" style="margin-bottom:14px">מסך משלו: כותבים ספר ומקום – גם בקיצור ובראשי תיבות – ולוחצים „לפתוח”. התוכנה מראה מה הבינה, ולאן זה מוביל – כל המהדורות, כל אחת בעמוד שלה.</p>
+    <div><span class="say">מסכת ברכות דף כ״ז עמוד א</span><span class="say">לקו״ש חלק כ״ד עמוד 358</span><span class="say">ליקוטי שיחות חלק ד׳ שיחה לפרשת נח</span><span class="say">ליקוטי שיחות חלק ד׳ עמוד 58</span><span class="say">תניא פרק ה</span><span class="say">שולחן ערוך אורח חיים סימן קכח</span></div>
+    <ul class="check"><li>מכיר שמות ספרים, תיקיות וראשי תיבות – "לקו״ש", "שו״ע אדה״ז"</li><li>כל כרך נפתח בעמוד שבו המקום מתחיל</li><li>הדף לא מדויק בספר סרוק? "✓ זה המקום" – והתוכנה לומדת</li></ul>
+  </div>
+  <div class="phone reveal">
+    <div class="ph-head"><div class="ph-logo">פ+</div><div class="ph-title">⚡ מעבר מהיר</div></div>
+    <div class="ph-body">
+      <div class="mic"><b style="font-size:15px">⚡ לאן לקפוץ?</b><div style="font-size:11px;opacity:.9">כותבים ספר ומקום, ולוחצים „לפתוח”</div></div>
+      <div style="color:var(--sub);font-size:11px;font-weight:700">מה לפתוח?</div>
+      <div class="heard">ברכות דף כ״ז עמוד א</div>
+      <div class="und">הבנתי: ברכות דף כז ע״א · נמצא ב-3 ספרים</div>
+      <div class="card"><b>📖 ברכות – ש״ס וילנא</b><span>גמרא › וילנא · עמוד 57</span></div>
+      <div class="card"><b>📖 ברכות – עוז והדר</b><span>גמרא › עוז והדר · עמוד 61</span></div>
+      <div class="card"><b>📖 ברכות ב – שוטנשטיין</b><span>גמרא › שוטנשטיין · עמוד 212</span></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="qa"><div class="wrap split rev">
+  <div class="txt reveal">
+    <div class="kicker">💡 שאלה ותשובה</div>
+    <h2>שואלים שאלה – ומקבלים את המשפט שעונה</h2>
+    <p class="intro" style="margin-bottom:14px">מודל בינה מלאכותית שמבין עברית לומד את כל המאגר פעם אחת – מחברים לטעינה ומשאירים ללילה. מהבוקר, כל שאלה, בלי אינטרנט.</p>
+    <ul class="check"><li>מוצא מקומות שעוסקים ברעיון, גם בלי אותן מילים</li><li>מביא את המשפט המדויק, עם הספר והעמוד</li><li>עובד כבר לפני שהאינדקס הושלם</li></ul>
+  </div>
+  <div class="phone reveal">
+    <div class="ph-head"><div class="ph-logo">פ+</div><div class="ph-title">💡 שאלה ותשובה</div></div>
+    <div class="ph-search"><span class="q">מה מברכים על פרי העץ?</span><span class="go">חיפוש</span></div>
+    <div class="ph-body">
+      <div class="answer"><div class="h">💡 התשובה מתוך הספרים שלך</div><div style="font-size:13.5px;margin:4px 0">‟על פירות האילן הוא אומר בורא פרי העץ, חוץ מן היין, שעל היין הוא אומר בורא פרי הגפן”</div><div class="s">📖 משנה ברכות פרק ו · לפתיחה ◂</div></div>
+      <div class="row"><div class="t">ברכות – ש״ס וילנא <i>91%</i></div><div class="f">גמרא</div></div>
+      <div class="row"><div class="t">שולחן ערוך הרב <i>88%</i></div><div class="f">הלכה › סדר ברכות הנהנין</div></div>
+      <div class="row"><div class="t">קיצור שולחן ערוך <i>84%</i></div><div class="f">הלכה</div></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="video" class="band"><div class="wrap">
+  <div class="kicker">▶ בשתי דקות וחצי</div>
+  <h2>רואים את זה עובד</h2>
+  <p class="intro">מהכתיבה ועד העמוד – מעבר מהיר, כל המהדורות, שאלה ותשובה, ובנייה בלילה.</p>
+  <div class="video reveal"><video controls preload="metadata" poster="poster.jpg" src="SearchPlus-Video.mp4"></video></div>
+</div></section>
+
+<section id="install"><div class="wrap">
+  <div class="kicker">⬇ התקנה</div>
+  <h2>שלושה צעדים, ואתם בפנים</h2>
+  <p class="intro">התוכנה לא בחנות Play (עדיין), ולכן אנדרואיד שואל לפני ההתקנה – זה רגיל ובטוח.</p>
+  <div class="steps">
+    <div class="step reveal"><h3>מורידים</h3><p>לוחצים <a href="https://github.com/sw0555041250-code/Search-Plus-/releases/latest/download/SearchPlus.apk">הורדה</a> במכשיר. אם הדפדפן שואל "להוריד בכל זאת?" – מאשרים.</p></div>
+    <div class="step reveal"><h3>מאשרים התקנה</h3><p>פותחים את הקובץ. כשמופיע "מטעמי אבטחה…" › <b>הגדרות</b> › מפעילים "אפשר ממקור זה" › חוזרים › <b>התקנה</b>. אם Play Protect שואל – "פרטים נוספים" › <b>"התקנה בכל זאת"</b>.</p></div>
+    <div class="step reveal"><h3>בוחרים תיקייה</h3><p>נותנים הרשאה לקבצים ובוחרים את תיקיית הספרים. הסריקה רצה ברקע – ומחפשים מיד. העדכונים מגיעים מעכשיו לבד.</p></div>
+  </div>
+  <p style="text-align:center;margin-top:40px"><a class="btn" href="https://github.com/sw0555041250-code/Search-Plus-/releases/latest/download/SearchPlus.apk">⬇ הורדת חיפוש פלוס</a>&nbsp; <a class="btn ghost" href="https://github.com/sw0555041250-code/Search-Plus-/releases/download/media/SearchPlus-Guide.pdf">📄 המדריך המלא (PDF)</a></p>
+</div></section>
+
+<section id="faq" class="band"><div class="wrap">
+  <div class="kicker">❓ שאלות נפוצות</div>
+  <h2>שאלות ותשובות</h2>
+  <details><summary>זה באמת עובד בלי אינטרנט?</summary><p>כן. מורידים פעם אחת את מודל המשמעות (כמה מאות MB), ומאז הכול – סריקה, חיפוש ושאלות – קורה בתוך המכשיר. האינטרנט נדרש רק לעדכונים.</p></details>
+  <details><summary>על איזה מכשירים זה עובד?</summary><p>כל מכשיר אנדרואיד 8 ומעלה – טלפון, טאבלט, וקוראי E-ink כמו BOOX. בקוראי E-ink התוכנה עוברת לבד לתצוגת שחור-לבן בניגודיות גבוהה; בטלפון היא צבעונית.</p></details>
+  <details><summary>כמה מקום זה תופס? זה משכפל לי את הספרים?</summary><p>לא משכפל. התוכנה שומרת רק את הטקסט של העמודים (אינדקס), שהוא קטן פי כמה מהקבצים עצמם. הספרים נשארים איפה שהם.</p></details>
+  <details><summary>יש לי 6,000 ספרים – כמה זמן לוקחת הסריקה?</summary><p>הסריקה הראשונה רצה ברקע – ספרים קטנים קודם, כך שרוב המאגר ניתן לחיפוש תוך זמן קצר. את אינדקס המשמעות כדאי לבנות לילה אחד בטעינה. אחרי זה נסרקים רק ספרים חדשים.</p></details>
+  <details><summary>אנדרואיד חוסם את ההתקנה. מה עושים?</summary><p>מאשרים "התקנה ממקורות לא ידועים" לדפדפן או למנהל הקבצים (הגדרות › אפליקציות › גישה מיוחדת › התקנת אפליקציות לא מוכרות). אם Play Protect מזהיר – "פרטים נוספים" › "התקנה בכל זאת". כל הגרסאות חתומות באותו מפתח ונבנות אוטומטית מקוד פתוח ב-GitHub.</p></details>
+  <details><summary>ספרים פותחים לי באפליקציה אחרת?</summary><p>בפעם הראשונה בוחרים: הקורא המובנה (עמוד מדויק + סימון המילים), או כל אפליקציה שיכולה לפתוח PDF – ReadEra, NeoReader ועוד. אפשר לשנות בהגדרות.</p></details>
+  <details><summary>זה עולה כסף?</summary><p>לא. חיפוש פלוס חינם לגמרי ומופץ לתועלת הרבים. הקוד פתוח ב-GitHub.</p></details>
+</div></section>
+
+<section id="contact"><div class="wrap">
+  <div class="contact reveal">
+    <h2>יש שאלה, רעיון או ספר שלא נמצא?</h2>
+    <p>נשמח לשמוע – כל הצעה הופכת את חיפוש פלוס לטוב יותר.</p>
+    <p><a class="btn" style="background:#fff;color:var(--acc)" href="mailto:sw0555041250@gmail.com?subject=%D7%97%D7%99%D7%A4%D7%95%D7%A9%20%D7%A4%D7%9C%D7%95%D7%A1">✉ sw0555041250@gmail.com</a></p>
+  </div>
+</div></section>
+
+<footer>פותח על ידי <b>שניאור וילהלם</b> · מופץ בחינם לתועלת הרבים · <a href="https://github.com/sw0555041250-code/Search-Plus-">קוד פתוח ב-GitHub</a></footer>
+
+<script>
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
